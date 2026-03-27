@@ -133,21 +133,10 @@
 
         .view-port::-webkit-scrollbar,
         .gallery-track::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            display: none;
         }
-        .view-port::-webkit-scrollbar-track,
-        .gallery-track::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        .view-port::-webkit-scrollbar-thumb,
-        .gallery-track::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        .view-port::-webkit-scrollbar-thumb:hover,
-        .gallery-track::-webkit-scrollbar-thumb:hover {
-            background: var(--text-dim);
+        .gallery-track {
+            scrollbar-width: none;
         }
 
         /* Dynamic Responsive Gallery */
@@ -161,6 +150,7 @@
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             position: relative;
+            height: 100%;
         }
 
         /* Carousel Nav Arrows */
@@ -168,6 +158,7 @@
             position: relative;
             overflow: hidden;
             min-width: 0;
+            height: 100%;
         }
 
         .carousel-nav {
@@ -240,6 +231,7 @@
         .img-card img {
             width: 100%;
             height: 100%;
+            aspect-ratio: unset !important; /* override Astro <Image> inline aspect-ratio */
             object-fit: cover;
             display: block;
         }
@@ -451,4 +443,205 @@
                 text-align: left;
             }
         }
-    
+
+        /* ── Home page ─────────────────────────────────── */
+
+        body.home {
+            overflow: auto;
+        }
+
+        .home-frame {
+            min-height: 100vh;
+            height: auto;
+            overflow: visible;
+        }
+
+        .home-header {
+            align-items: center;
+        }
+
+        .home-title-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .home-title-block .status-led {
+            margin-top: clamp(10px, 2.5vw, 26px);
+            flex-shrink: 0;
+        }
+
+        .home-title-block h1 {
+            font-size: clamp(28px, 5vw, 60px);
+            line-height: 1;
+        }
+
+        .home-subtitle {
+            font-family: var(--mono);
+            font-size: clamp(9px, 1.5vw, 10px);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-top: 8px;
+        }
+
+        /* ── Recipe grid ────────────────────────────────── */
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            flex-grow: 1;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Recipe card ────────────────────────────────── */
+
+        .recipe-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface);
+            text-decoration: none;
+            color: var(--text);
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            transition: background 0.3s;
+        }
+
+        .recipe-card:hover {
+            background: var(--surface-hover);
+        }
+
+        .recipe-card-image {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .recipe-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .recipe-card:hover .recipe-card-image img {
+            transform: scale(1.04);
+        }
+
+        .recipe-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(9, 10, 15, 0.15) 0%,
+                rgba(9, 10, 15, 0.75) 70%,
+                rgba(9, 10, 15, 0.95) 100%
+            );
+        }
+
+        .recipe-card-body {
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+            padding: 24px 24px 20px;
+        }
+
+        .recipe-card-ref {
+            display: block;
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .recipe-card-name {
+            font-family: var(--serif);
+            font-size: clamp(26px, 3.5vw, 38px);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1;
+            background: linear-gradient(to bottom right, #ffffff, #c0c5d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .recipe-card-sim {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .recipe-card-arrow {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(18, 20, 28, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(-6px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .recipe-card-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text);
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .recipe-card:hover .recipe-card-arrow {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ── Back link on detail page ───────────────────── */
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            text-decoration: none;
+            flex-shrink: 0;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .back-link:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text);
+            background: var(--surface-hover);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }

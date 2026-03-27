@@ -2,7 +2,7 @@
 name: "New American"
 refNo: "FJS-NAMER"
 version: "01.0"
-calibration: "X-SYSTEM_V3"
+calibration: "X-TRANS V"
 status: "Ready"
 opt: "ISO 640"
 core:

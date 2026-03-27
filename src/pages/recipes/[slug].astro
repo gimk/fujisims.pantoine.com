@@ -1,0 +1,194 @@
+---
+import '../../styles/global.css';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { getCollection, getEntry } from 'astro:content';
+import SliderParam from '../../components/SliderParam.astro';
+
+export async function getStaticPaths() {
+    const recipes = await getCollection('recipes');
+    return recipes.map(entry => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const recipeData = entry.data;
+
+const require = createRequire(import.meta.url);
+const exifr = require('exifr/dist/full.umd.cjs');
+
+interface GalleryPhoto {
+    image: ImageMetadata;
+    tag: string;
+    exif: string;
+}
+
+async function getGalleryData(): Promise<GalleryPhoto[]> {
+    const photos: GalleryPhoto[] = [];
+    
+    for (let i = 0; i < recipeData.images.length; i++) {
+        const imageData = recipeData.images[i];
+        
+        let exifString = "EXIF NOT FOUND";
+        try {
+            let cleanSrc = imageData.src.split('?')[0].replace('/@fs', '');
+            const absolutePath = (imageData as any).fsPath || (path.isAbsolute(cleanSrc) ? cleanSrc : path.join(process.cwd(), cleanSrc));
+            const exif = await exifr.parse(absolutePath, { tiff: true, exif: true });
+            if (exif) {
+                const fNumber = exif.FNumber ? `F/${exif.FNumber}` : 'F/--';
+                let exposure = exif.ExposureTime;
+                let expString = '1/--';
+                if (exposure) {
+                    if (exposure >= 1) expString = `${exposure}S`;
+                    else expString = `1/${Math.round(1/exposure)}`;
+                }
+                const focalLength = exif.FocalLengthIn35mmFormat ? `${exif.FocalLengthIn35mmFormat}MM` : (exif.FocalLength ? `${exif.FocalLength}MM` : '--MM');
+                exifString = `${fNumber} · ${expString} · ${focalLength}`;
+            }
+        } catch(e) {
+             exifString = "ERR: " + (e as Error).message;
+             console.error(`Error parsing exif:`, e);
+        }
+        
+        photos.push({
+            image: imageData,
+            tag: `IMG_00${i + 1}`,
+            exif: exifString
+        });
+    }
+    return photos;
+}
+
+const galleryData = await getGalleryData();
+
+// Extract film simulation from core params for the subtitle
+const filmSim = recipeData.core.find((p: { label: string }) => p.label === 'Film Simulation')?.value ?? '';
+---
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{recipeData.name} — Fujifilm Simulation Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+</head>
+<body>
+
+    <div class="frame">
+        <header class="animate-in">
+            <div class="recipe-identity">
+                <a href="/" class="back-link" aria-label="Back to recipes">
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </a>
+                <div class="status-led"></div>
+                <h1>{recipeData.name}</h1>
+            </div>
+            <div class="meta-data">
+                REF_NO: {recipeData.refNo} // VER: {recipeData.version}<br>
+                CALIBRATION: {recipeData.calibration}
+            </div>
+        </header>
+
+        <div class="view-port">
+        <div class="gallery-wrapper">
+            <section class="gallery-track animate-in delay-1" id="gallery-track">
+                {galleryData.map((img: GalleryPhoto, index: number) => (
+                    <div class="img-card">
+                        <div class="card-tag">{img.tag}</div>
+                        <div class="exif-bar">
+                            <span class="exif-data">{img.exif}</span>
+                            <span>REF_LOG: {Math.floor(Math.random() * 1000)}</span>
+                        </div>
+                        <Image src={img.image} width={1200} alt="Simulation Preview" loading={(index < 4 ? "eager" : "lazy") as "eager" | "lazy"} />
+                    </div>
+                ))}
+            </section>
+            <button class="carousel-nav prev hidden" id="carousel-prev" aria-label="Previous image">
+                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="carousel-nav next" id="carousel-next" aria-label="Next image">
+                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+
+            <aside class="data-column animate-in delay-2">
+                <div class="data-section">
+                    <h3 class="data-section-title">Core Engine</h3>
+                    <div id="core-params">
+                        {recipeData.core.map((p: { label: string; value: string | number }) => (
+                            <div class="param-item">
+                                <div class="param-info">
+                                    <span class="label">{p.label}</span>
+                                    <span class="value">{p.value}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h3 class="data-section-title">Adjustments</h3>
+                    <div id="adj-params">
+                        {recipeData.adjustments.map((p: { label: string; value: string | number }) => {
+                            const isSlider = typeof p.value === 'number';
+                            if (isSlider) {
+                                return (
+                                    <SliderParam
+                                        label={p.label}
+                                        value={p.value as number}
+                                    />
+                                );
+                            }
+                            return (
+                                <div class="param-item">
+                                    <div class="param-info">
+                                        <span class="label">{p.label}</span>
+                                        <span class="value">{p.value}</span>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <footer class="animate-in delay-3">
+            <span>Status: {recipeData.status} // Opt: {recipeData.opt}</span>
+            <span>Fujifilm Simulation Protocol © 2026</span>
+        </footer>
+    </div>
+
+<script>
+    const track = document.getElementById('gallery-track') as HTMLElement;
+    const prevBtn = document.getElementById('carousel-prev') as HTMLButtonElement;
+    const nextBtn = document.getElementById('carousel-next') as HTMLButtonElement;
+
+    function updateArrows() {
+        const atStart = track.scrollLeft <= 4;
+        const atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+        prevBtn.classList.toggle('hidden', atStart);
+        nextBtn.classList.toggle('hidden', atEnd);
+    }
+
+    prevBtn.addEventListener('click', () => {
+        track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+    });
+
+    track.addEventListener('scroll', updateArrows, { passive: true });
+    updateArrows();
+</script>
+
+</body>
+</html>
