@@ -127,16 +127,13 @@ const galleryData = await getGalleryData();
                 <div class="data-section">
                     <h3 class="data-section-title">Adjustments</h3>
                     <div id="adj-params">
-                        {recipeData.adjustments.map((p: { label: string; value: string | number; min?: number; max?: number; increment?: number }) => {
-                            const isSlider = typeof p.value === 'number' && p.min !== undefined && p.max !== undefined && p.increment !== undefined;
+                        {recipeData.adjustments.map((p: { label: string; value: string | number }) => {
+                            const isSlider = typeof p.value === 'number';
                             if (isSlider) {
                                 return (
                                     <SliderParam
                                         label={p.label}
                                         value={p.value as number}
-                                        min={p.min as number}
-                                        max={p.max as number}
-                                        increment={p.increment as number}
                                     />
                                 );
                             }

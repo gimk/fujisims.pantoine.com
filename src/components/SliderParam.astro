@@ -1,25 +1,36 @@
 ---
-interface Props {
-    label: string;
-    value: number;
+interface SliderConfig {
     min: number;
     max: number;
     increment: number;
 }
 
-const { label, value, min, max, increment } = Astro.props;
+const SLIDER_CONFIGS: Record<string, SliderConfig> = {
+    "Highlight":        { min: -2, max: 4,  increment: 0.5 },
+    "Shadow":           { min: -2, max: 4,  increment: 0.5 },
+    "Color":            { min: -4, max: 4,  increment: 1   },
+    "Sharpness":        { min: -4, max: 4,  increment: 1   },
+    "Noise Reduction":  { min: -4, max: 4,  increment: 1   },
+    "Clarity":          { min: -5, max: 5,  increment: 1   },
+};
 
-// Clamp and compute percentage position
+interface Props {
+    label: string;
+    value: number;
+}
+
+const { label, value } = Astro.props;
+const config = SLIDER_CONFIGS[label];
+
+if (!config) throw new Error(`SliderParam: no config found for setting "${label}"`);
+
+const { min, max, increment } = config;
+
 const clamped = Math.min(max, Math.max(min, value));
 const percent = ((clamped - min) / (max - min)) * 100;
-
-// Center tick position (where 0 sits on the track)
 const zeroPercent = ((0 - min) / (max - min)) * 100;
-
-// Display string
 const displayValue = value > 0 ? `+${value}` : `${value}`;
 
-// Number of ticks
 const steps = Math.round((max - min) / increment);
 const ticks = Array.from({ length: steps + 1 }, (_, i) => min + i * increment);
 ---
@@ -30,16 +41,13 @@ const ticks = Array.from({ length: steps + 1 }, (_, i) => min + i * increment);
         <span class="value">{displayValue}</span>
     </div>
     <div class="slider-track">
-        <!-- Tick marks -->
         {ticks.map(tick => (
             <div
                 class={`slider-tick${tick === 0 ? ' zero' : ''}`}
                 style={`left: ${((tick - min) / (max - min)) * 100}%`}
             ></div>
         ))}
-        <!-- Zero center marker (prominent) -->
         <div class="slider-center" style={`left: ${zeroPercent}%`}></div>
-        <!-- Value knob -->
         <div class="slider-dot" style={`left: ${percent}%`}></div>
     </div>
 </div>

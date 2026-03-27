@@ -17,9 +17,6 @@ const recipesCollection = defineCollection({
         adjustments: z.array(z.object({
             label: z.string(),
             value: z.union([z.string(), z.number()]),
-            min: z.number().optional(),
-            max: z.number().optional(),
-            increment: z.number().optional(),
         })),
         images: z.array(image())
     })
