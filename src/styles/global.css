@@ -132,11 +132,14 @@
         }
 
         .view-port::-webkit-scrollbar,
-        .gallery-track::-webkit-scrollbar {
+        .gallery-track::-webkit-scrollbar,
+        .data-column::-webkit-scrollbar {
             display: none;
         }
-        .gallery-track {
+        .gallery-track,
+        .data-column {
             scrollbar-width: none;
+            -ms-overflow-style: none;
         }
 
         /* Dynamic Responsive Gallery */
