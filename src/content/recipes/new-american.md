@@ -21,16 +21,34 @@ core:
 adjustments:
   - label: "Highlight"
     value: 1
+    min: -2
+    max: 4
+    increment: 0.5
   - label: "Shadow"
     value: -0.5
+    min: -2
+    max: 4
+    increment: 0.5
   - label: "Color"
     value: 0
+    min: -4
+    max: 4
+    increment: 1
   - label: "Sharpness"
     value: -4
+    min: -4
+    max: 4
+    increment: 1
   - label: "Noise Reduction"
     value: 4
+    min: -4
+    max: 4
+    increment: 1
   - label: "Clarity"
     value: 0
+    min: -5
+    max: 5
+    increment: 1
   - label: "Exp. Comp."
     value: "Typically +1/3 — +2/3"
   - label: "ISO"
