@@ -120,6 +120,19 @@
             letter-spacing: 0.2em;
             line-height: 1.8;
             text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-separator {
+            display: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         /* Responsive Layout */
@@ -415,38 +428,6 @@
         }
 
         /* Mobile Adjustments */
-        @media (max-width: 1024px) {
-            .view-port {
-                grid-template-columns: 1fr;
-            }
-            .gallery-track {
-                border-right: none;
-                padding: 0;
-            }
-            .data-column {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                position: relative;
-                top: auto;
-                /* Order constraint is removed, so it flows naturally after the gallery-track */
-                padding: clamp(30px, 6vw, 40px) clamp(15px, 4vw, 30px);
-                background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
-                border-top: 1px solid var(--border);
-            }
-            .frame {
-                margin: 0;
-                border: none;
-                border-radius: 0;
-            }
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            .meta-data {
-                text-align: left;
-            }
-        }
 
         /* ── Home page ─────────────────────────────────── */
 
@@ -1280,4 +1261,64 @@
 
         .spinner.visible {
           display: block;
+        }
+
+        /* Mobile Adjustments (Moved to end for correct override) */
+        @media (max-width: 1024px) {
+            .view-port {
+                grid-template-columns: 1fr;
+            }
+            .gallery-track {
+                border-right: none;
+                padding: 0;
+            }
+            .data-column {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                position: relative;
+                top: auto;
+                /* Order constraint is removed, so it flows naturally after the gallery-track */
+                padding: clamp(30px, 6vw, 40px) clamp(15px, 4vw, 30px);
+                background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+                border-top: 1px solid var(--border);
+            }
+            .frame {
+                margin: 0;
+                border: none;
+                border-radius: 0;
+            }
+            header,
+            .home-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 25px;
+                padding: 30px 20px;
+            }
+            .header-right,
+            .home-header-right {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                width: 100%;
+            }
+            .header-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 12px;
+                width: 100%;
+            }
+            .meta-data {
+                flex-direction: row;
+                align-items: baseline;
+                gap: 8px;
+                text-align: left;
+                margin-top: 8px;
+            }
+            .meta-separator {
+                display: inline;
+                opacity: 0.3;
+            }
+            .last-recipe-pill {
+                width: fit-content;
+            }
         }
