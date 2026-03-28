@@ -773,7 +773,7 @@ import "../styles/global.css";
 
           const form = e.target as HTMLFormElement;
           const get = (id: string) =>
-            (document.getElementById(id) as HTMLInputElement).value.trim();
+            ((document.getElementById(id) as HTMLInputElement)?.value ?? "").trim();
 
           const wbVal = get("white-balance");
           const wbShift = get("wb-shift");
@@ -832,18 +832,18 @@ import "../styles/global.css";
               adjustments: [
                 {
                   label: "Highlight",
-                  value: parseFloat(get("highlight")) || 0,
+                  value: parseFloat(get("adj-highlight")) || 0,
                 },
-                { label: "Shadow", value: parseFloat(get("shadow")) || 0 },
-                { label: "Color", value: parseInt(get("color")) || 0 },
-                { label: "Sharpness", value: parseInt(get("sharpness")) || 0 },
+                { label: "Shadow", value: parseFloat(get("adj-shadow")) || 0 },
+                { label: "Color", value: parseInt(get("adj-color")) || 0 },
+                { label: "Sharpness", value: parseInt(get("adj-sharpness")) || 0 },
                 {
                   label: "Noise Reduction",
-                  value: parseInt(get("noiseReduction")) || 0,
+                  value: parseInt(get("adj-nr")) || 0,
                 },
-                { label: "Clarity", value: parseInt(get("clarity")) || 0 },
-                { label: "Exp. Comp.", value: get("expComp") || "0" },
-                { label: "ISO", value: get("iso") || "Auto" },
+                { label: "Clarity", value: parseInt(get("adj-clarity")) || 0 },
+                { label: "Exp. Comp.", value: get("adj-expcomp") || "0" },
+                { label: "ISO", value: get("adj-iso") || "Auto" },
               ],
             },
             images: compressedImages.map((img) => ({
