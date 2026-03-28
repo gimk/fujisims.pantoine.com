@@ -551,6 +551,8 @@ import "../styles/global.css";
       let turnstileToken = "";
 
       // ── Turnstile callback ──────────────────────────────
+      // Turnstile also injects a hidden input (cf-turnstile-response);
+      // we read that directly on submit for reliability.
       (window as any).onTurnstileSuccess = (token: string) => {
         turnstileToken = token;
       };
@@ -748,10 +750,15 @@ import "../styles/global.css";
           e.preventDefault();
           hideStatus();
 
+          // Read token from the hidden input Turnstile injects, falling back
+          // to the callback-stored value.
+          const cfInput = document.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]');
+          const captchaToken = cfInput?.value || turnstileToken;
+
           const nameOk = !!(document.getElementById("recipe-name") as HTMLInputElement).value.trim();
           const simOk = !!(document.getElementById("film-sim") as HTMLSelectElement).value;
           const imagesOk = compressedImages.length >= 2;
-          const captchaOk = !!turnstileToken;
+          const captchaOk = !!captchaToken;
 
           const errors: string[] = [];
           if (!nameOk) errors.push("Recipe name is required.");
@@ -773,7 +780,7 @@ import "../styles/global.css";
           const wbFull = wbShift ? `${wbVal}, ${wbShift}` : wbVal;
 
           const payload = {
-            turnstileToken,
+            turnstileToken: captchaToken,
             recipe: {
               name: get("recipe-name"),
               calibration: (
