@@ -70,7 +70,10 @@ export default {
     try {
       // 1. Get the SHA of the base branch HEAD
       const refRes = await fetch(`${ghBase}/git/ref/heads/${env.GITHUB_BRANCH}`, { headers: ghHeaders });
-      if (!refRes.ok) throw new Error('Failed to fetch base branch ref');
+      if (!refRes.ok) {
+        const errBody = await refRes.text();
+        throw new Error(`Failed to fetch base branch ref (HTTP ${refRes.status}): ${errBody}`);
+      }
       const refData = await refRes.json();
       const baseSha = refData.object.sha;
 
