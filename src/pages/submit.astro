@@ -506,7 +506,7 @@ import "../styles/global.css";
                 Your submission is reviewed manually before going live. No
                 account required — recipes are attributed as provided.
               </p>
-              <button type="submit" id="submit-btn" class="submit-btn" disabled>
+              <button type="submit" id="submit-btn" class="submit-btn">
                 <span class="spinner" id="spinner"></span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -553,24 +553,10 @@ import "../styles/global.css";
       // ── Turnstile callback ──────────────────────────────
       (window as any).onTurnstileSuccess = (token: string) => {
         turnstileToken = token;
-        updateSubmitState();
       };
 
 
-
       // ── UI helpers ──────────────────────────────────────
-      function updateSubmitState() {
-        const btn = document.getElementById("submit-btn") as HTMLButtonElement;
-        const nameOk = !!(
-          document.getElementById("recipe-name") as HTMLInputElement
-        ).value.trim();
-        const simOk = !!(
-          document.getElementById("film-sim") as HTMLSelectElement
-        ).value;
-        const imagesOk = compressedImages.length >= 2;
-        const captchaOk = !!turnstileToken;
-        btn.disabled = !(nameOk && simOk && imagesOk && captchaOk);
-      }
 
       function showStatus(type: "success" | "error", message: string) {
         const el = document.getElementById("status-msg")!;
@@ -677,10 +663,8 @@ import "../styles/global.css";
               const idx = parseInt(btn.dataset.index!);
               compressedImages.splice(idx, 1);
               renderPreviews();
-              updateSubmitState();
             });
           });
-        updateSubmitState();
       }
 
       // ── File handling ────────────────────────────────────
@@ -756,12 +740,6 @@ import "../styles/global.css";
           });
         });
 
-      // ── Live validation ──────────────────────────────────
-      ["recipe-name", "film-sim"].forEach((id) => {
-        document
-          .getElementById(id)
-          ?.addEventListener("input", updateSubmitState);
-      });
 
       // ── Form submit ──────────────────────────────────────
       document
@@ -770,12 +748,19 @@ import "../styles/global.css";
           e.preventDefault();
           hideStatus();
 
-          if (!turnstileToken) {
-            showStatus("error", "Please complete the verification challenge.");
-            return;
-          }
-          if (compressedImages.length < 2) {
-            showStatus("error", "Please add at least 2 example photos.");
+          const nameOk = !!(document.getElementById("recipe-name") as HTMLInputElement).value.trim();
+          const simOk = !!(document.getElementById("film-sim") as HTMLSelectElement).value;
+          const imagesOk = compressedImages.length >= 2;
+          const captchaOk = !!turnstileToken;
+
+          const errors: string[] = [];
+          if (!nameOk) errors.push("Recipe name is required.");
+          if (!simOk) errors.push("Please select a Film Simulation.");
+          if (!imagesOk) errors.push(`Please add at least 2 example photos (${compressedImages.length} added so far).`);
+          if (!captchaOk) errors.push("Please complete the CAPTCHA verification.");
+
+          if (errors.length > 0) {
+            showStatus("error", errors.join(" · "));
             return;
           }
 
@@ -882,7 +867,6 @@ import "../styles/global.css";
             turnstileToken = "";
             renderPreviews();
             (window as any).turnstile?.reset();
-            updateSubmitState();
           } catch (err: any) {
             showStatus(
               "error",
