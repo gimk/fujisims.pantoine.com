@@ -1,0 +1,13 @@
+name = "fujisims-submission"
+main = "index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+GITHUB_OWNER = "gimk"   # ← replace with your GitHub username
+GITHUB_REPO  = "fujisims.pantoine.com"  # ← replace with your repo name
+GITHUB_BRANCH = "master"
+
+# Secrets — set via CLI, never put real values here:
+# wrangler secret put GITHUB_TOKEN
+# wrangler secret put TURNSTILE_SECRET

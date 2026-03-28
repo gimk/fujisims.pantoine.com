@@ -1,0 +1,1084 @@
+---
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit a Recipe — Fujifilm Simulation Recipes</title>
+    <meta
+      name="description"
+      content="Share your Fujifilm film simulation recipe with the community. Submit your settings and example photos for review."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/png" href="/favicon.png?v=1" />
+    <!-- Cloudflare Turnstile -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+      /* ── Submit page specific styles ─────────────────── */
+
+      body.submit-page {
+        overflow: auto;
+        min-height: 100vh;
+      }
+
+      .submit-frame {
+        min-height: 100vh;
+        height: auto;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .submit-header {
+        padding: clamp(20px, 4vw, 50px) clamp(20px, 5vw, 60px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .submit-title-block {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .submit-title-block h1 {
+        font-size: clamp(24px, 4vw, 48px);
+        line-height: 1;
+      }
+
+      .submit-subtitle {
+        font-family: var(--mono);
+        font-size: clamp(9px, 1.5vw, 10px);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        margin-top: 6px;
+      }
+
+      /* ── Form layout ──────────────────────────────────── */
+
+      .submit-body {
+        max-width: 860px;
+        margin: 0 auto;
+        width: 100%;
+        padding: clamp(40px, 6vw, 80px) clamp(20px, 5vw, 60px);
+        display: flex;
+        flex-direction: column;
+        gap: 56px;
+        flex-grow: 1;
+      }
+
+      .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .form-section-title {
+        font-size: 10px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .form-section-title::after {
+        content: '';
+        flex-grow: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .form-grid.single {
+        grid-template-columns: 1fr;
+      }
+
+      @media (max-width: 640px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ── Field ──────────────────────────────────────── */
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field label {
+        font-size: 9px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 12px;
+        padding: 10px 14px;
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.2s, background 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+      }
+
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: var(--text-dim);
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: var(--surface-hover);
+      }
+
+      .field select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a91a6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 36px;
+        cursor: pointer;
+      }
+
+      .field textarea {
+        resize: vertical;
+        min-height: 90px;
+        line-height: 1.6;
+      }
+
+      /* ── Adjustment row ──────────────────────────────── */
+
+      .adj-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+      }
+
+      .adj-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .adj-field label {
+        font-size: 9px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+      }
+
+      .adj-input-wrap {
+        display: flex;
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+      }
+
+      .adj-input-wrap:focus-within {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .adj-stepper {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        width: 32px;
+        height: 38px;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: color 0.2s, background 0.2s;
+        font-family: var(--mono);
+        line-height: 1;
+      }
+
+      .adj-stepper:hover {
+        color: var(--text);
+        background: var(--surface-hover);
+      }
+
+      .adj-number {
+        background: none;
+        border: none;
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+        outline: none;
+        padding: 0;
+        min-width: 0;
+      }
+
+      /* hide browser spin buttons */
+      .adj-number::-webkit-inner-spin-button,
+      .adj-number::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+      }
+      .adj-number[type=number] { -moz-appearance: textfield; }
+
+      /* ── Image uploader ──────────────────────────────── */
+
+      .image-upload-area {
+        border: 1px dashed var(--border);
+        border-radius: 8px;
+        padding: 36px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        text-align: center;
+        position: relative;
+      }
+
+      .image-upload-area:hover,
+      .image-upload-area.drag-over {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: var(--surface);
+      }
+
+      .image-upload-area input[type="file"] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .upload-icon {
+        width: 36px;
+        height: 36px;
+        color: var(--text-dim);
+      }
+
+      .upload-label {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .upload-hint {
+        font-size: 10px;
+        color: var(--text-dim);
+        letter-spacing: 0.1em;
+      }
+
+      .image-previews {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .preview-item {
+        position: relative;
+        aspect-ratio: 3 / 2;
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+
+      .preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .preview-remove {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(9, 10, 15, 0.7);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: var(--text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        line-height: 1;
+        transition: background 0.2s;
+      }
+
+      .preview-remove:hover {
+        background: rgba(255, 69, 58, 0.7);
+      }
+
+      .preview-size {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        font-size: 8px;
+        color: var(--text-muted);
+        background: rgba(9, 10, 15, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 2px 6px;
+        border-radius: 3px;
+        letter-spacing: 0.1em;
+      }
+
+      .compression-badge {
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+        font-size: 8px;
+        color: #4ade80;
+        background: rgba(9, 10, 15, 0.6);
+        backdrop-filter: blur(6px);
+        padding: 2px 6px;
+        border-radius: 3px;
+        letter-spacing: 0.1em;
+        display: none;
+      }
+
+      .compression-badge.visible {
+        display: block;
+      }
+
+      /* ── Turnstile ───────────────────────────────────── */
+
+      .turnstile-wrap {
+        display: flex;
+        justify-content: flex-start;
+      }
+
+      /* ── Submit button ───────────────────────────────── */
+
+      .submit-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+
+      .submit-note {
+        font-size: 10px;
+        color: var(--text-dim);
+        letter-spacing: 0.1em;
+        max-width: 400px;
+        line-height: 1.6;
+      }
+
+      .submit-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        height: 44px;
+        padding: 0 28px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: var(--surface);
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s, transform 0.2s;
+        white-space: nowrap;
+      }
+
+      .submit-btn:hover:not(:disabled) {
+        background: var(--surface-hover);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .submit-btn:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .submit-btn svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      /* ── Status messages ─────────────────────────────── */
+
+      .status-msg {
+        display: none;
+        padding: 16px 20px;
+        border-radius: 8px;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        line-height: 1.7;
+        border: 1px solid;
+      }
+
+      .status-msg.success {
+        background: rgba(74, 222, 128, 0.07);
+        border-color: rgba(74, 222, 128, 0.25);
+        color: #4ade80;
+      }
+
+      .status-msg.error {
+        background: rgba(255, 69, 58, 0.07);
+        border-color: rgba(255, 69, 58, 0.25);
+        color: var(--accent);
+      }
+
+      .status-msg.visible {
+        display: block;
+      }
+
+      /* ── Footer ──────────────────────────────────────── */
+
+      .submit-footer {
+        padding: 30px clamp(20px, 5vw, 60px);
+        border-top: 1px solid var(--border);
+        font-size: 10px;
+        color: var(--text-dim);
+        display: flex;
+        justify-content: space-between;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      /* ── Spinner ─────────────────────────────────────── */
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-top-color: var(--text);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        display: none;
+        flex-shrink: 0;
+      }
+
+      .spinner.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="submit-page">
+    <div class="frame submit-frame">
+
+      <!-- Header -->
+      <header class="submit-header animate-in">
+        <div class="submit-title-block">
+          <a href="/" class="back-link" aria-label="Back to recipes">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </a>
+          <div>
+            <h1>Submit a Recipe</h1>
+            <p class="submit-subtitle">Fujifilm X-System · Community Recipe Submission</p>
+          </div>
+        </div>
+        <div class="meta-data">
+          REVIEW: Manual approval<br />
+          FORMAT: Markdown / GitHub PR
+        </div>
+      </header>
+
+      <!-- Form -->
+      <main class="submit-body animate-in delay-1">
+        <form id="recipe-form" novalidate>
+
+          <!-- ① Identity -->
+          <section class="form-section">
+            <div class="form-section-title">01 — Recipe Identity</div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="recipe-name">Recipe Name <span style="color:var(--accent)">*</span></label>
+                <input type="text" id="recipe-name" name="name" required placeholder="e.g. New American" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="recipe-calibration">Camera System</label>
+                <select id="recipe-calibration" name="calibration">
+                  <option value="X-TRANS V">X-Trans V (X-T5, X-H2, X-Pro3…)</option>
+                  <option value="X-TRANS IV">X-Trans IV (X-T4, X-S10…)</option>
+                  <option value="X-TRANS III">X-Trans III (X-T3, X-T30…)</option>
+                  <option value="Bayer GFX">GFX / Bayer (GFX100, X-A…)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="recipe-author">Your Name / Alias</label>
+                <input type="text" id="recipe-author" name="author" placeholder="Anonymous" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label for="recipe-author-link">Author Link (optional)</label>
+                <input type="url" id="recipe-author-link" name="authorLink" placeholder="https://instagram.com/yourprofile" />
+              </div>
+              <div class="field form-grid single" style="grid-column: 1 / -1;">
+                <label for="recipe-description">Short Description (optional)</label>
+                <textarea id="recipe-description" name="description" placeholder="Describe the mood, inspiration or ideal shooting conditions for this recipe…"></textarea>
+              </div>
+              <div class="field">
+                <label for="recipe-opt">Optimal ISO / Conditions (optional)</label>
+                <input type="text" id="recipe-opt" name="opt" placeholder="e.g. ISO 640" />
+              </div>
+            </div>
+          </section>
+
+          <!-- ② Core Settings -->
+          <section class="form-section">
+            <div class="form-section-title">02 — Core Settings</div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="film-sim">Film Simulation <span style="color:var(--accent)">*</span></label>
+                <select id="film-sim" name="filmSimulation" required>
+                  <option value="">— Select —</option>
+                  <optgroup label="Classic">
+                    <option>Provia/Standard</option>
+                    <option>Velvia/Vivid</option>
+                    <option>Astia/Soft</option>
+                    <option>Classic Chrome</option>
+                    <option>Classic Neg.</option>
+                    <option>Reala ACE</option>
+                  </optgroup>
+                  <optgroup label="Nostalgic">
+                    <option>Nostalgic Neg.</option>
+                    <option>Pro Neg. Hi</option>
+                    <option>Pro Neg. Std</option>
+                  </optgroup>
+                  <optgroup label="Modern">
+                    <option>Eterna Cinema</option>
+                    <option>Eterna Bleach Bypass</option>
+                    <option>Acros</option>
+                  </optgroup>
+                  <optgroup label="Monochrome">
+                    <option>Monochrome</option>
+                    <option>Monochrome + R</option>
+                    <option>Monochrome + Ye</option>
+                    <option>Monochrome + G</option>
+                    <option>Sepia</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="field">
+                <label for="grain-effect">Grain Effect</label>
+                <select id="grain-effect" name="grainEffect">
+                  <option value="Off">Off</option>
+                  <option value="Weak / Small">Weak / Small</option>
+                  <option value="Weak / Large">Weak / Large</option>
+                  <option value="Strong / Small">Strong / Small</option>
+                  <option value="Strong / Large" selected>Strong / Large</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="color-chrome">Color Chrome Effect</label>
+                <select id="color-chrome" name="colorChrome">
+                  <option value="Off">Off</option>
+                  <option value="Weak">Weak</option>
+                  <option value="Strong" selected>Strong</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="color-chrome-blue">Color Chrome FX Blue</label>
+                <select id="color-chrome-blue" name="colorChromeBlue">
+                  <option value="Off">Off</option>
+                  <option value="Weak" selected>Weak</option>
+                  <option value="Strong">Strong</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="white-balance">White Balance</label>
+                <select id="white-balance" name="whiteBalance">
+                  <option value="Auto">Auto</option>
+                  <option value="Auto White Priority">Auto White Priority</option>
+                  <option value="Auto Ambiance Priority">Auto Ambiance Priority</option>
+                  <option value="Daylight">Daylight</option>
+                  <option value="Shade">Shade</option>
+                  <option value="Cloudy">Cloudy</option>
+                  <option value="Fluorescent 1">Fluorescent 1</option>
+                  <option value="Fluorescent 2">Fluorescent 2</option>
+                  <option value="Fluorescent 3">Fluorescent 3</option>
+                  <option value="Incandescent/Tungsten">Incandescent</option>
+                  <option value="Custom">Custom</option>
+                  <option value="Color Temp.">Color Temperature</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="wb-shift">WB Shift Red / Blue (optional)</label>
+                <input type="text" id="wb-shift" name="wbShift" placeholder="e.g. +3 Red, -4 Blue" />
+              </div>
+              <div class="field">
+                <label for="dynamic-range">Dynamic Range</label>
+                <select id="dynamic-range" name="dynamicRange">
+                  <option value="DR100">DR100</option>
+                  <option value="DR200">DR200</option>
+                  <option value="DR400">DR400</option>
+                  <option value="Auto">Auto</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <!-- ③ Adjustments -->
+          <section class="form-section">
+            <div class="form-section-title">03 — Tone &amp; Adjustments</div>
+            <div class="adj-grid" id="adj-grid">
+              <!-- Highlight -->
+              <div class="adj-field">
+                <label>Highlight</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-highlight" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-highlight" name="highlight" value="0" min="-2" max="4" step="0.5" />
+                  <button type="button" class="adj-stepper" data-target="adj-highlight" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Shadow -->
+              <div class="adj-field">
+                <label>Shadow</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-shadow" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-shadow" name="shadow" value="0" min="-2" max="4" step="0.5" />
+                  <button type="button" class="adj-stepper" data-target="adj-shadow" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Color -->
+              <div class="adj-field">
+                <label>Color</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-color" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-color" name="color" value="0" min="-4" max="4" step="1" />
+                  <button type="button" class="adj-stepper" data-target="adj-color" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Sharpness -->
+              <div class="adj-field">
+                <label>Sharpness</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-sharpness" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-sharpness" name="sharpness" value="0" min="-4" max="4" step="1" />
+                  <button type="button" class="adj-stepper" data-target="adj-sharpness" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Noise Reduction -->
+              <div class="adj-field">
+                <label>Noise Reduction</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-nr" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-nr" name="noiseReduction" value="0" min="-4" max="4" step="1" />
+                  <button type="button" class="adj-stepper" data-target="adj-nr" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Clarity -->
+              <div class="adj-field">
+                <label>Clarity</label>
+                <div class="adj-input-wrap">
+                  <button type="button" class="adj-stepper" data-target="adj-clarity" data-dir="-1">−</button>
+                  <input class="adj-number" type="number" id="adj-clarity" name="clarity" value="0" min="-5" max="5" step="1" />
+                  <button type="button" class="adj-stepper" data-target="adj-clarity" data-dir="1">+</button>
+                </div>
+              </div>
+              <!-- Exp Comp -->
+              <div class="adj-field">
+                <label>Exp. Comp.</label>
+                <div class="adj-input-wrap" style="border: none; background: none; padding: 0;">
+                  <input class="adj-number" type="text" id="adj-expcomp" name="expComp" placeholder="e.g. +1/3 to +2/3"
+                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;" />
+                </div>
+              </div>
+              <!-- ISO -->
+              <div class="adj-field">
+                <label>ISO</label>
+                <div class="adj-input-wrap" style="border: none; background: none; padding: 0;">
+                  <input class="adj-number" type="text" id="adj-iso" name="iso" placeholder="e.g. 200–1600"
+                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ④ Photos -->
+          <section class="form-section">
+            <div class="form-section-title">04 — Example Photos (2–6 images)</div>
+            <div
+              class="image-upload-area"
+              id="drop-zone"
+              role="button"
+              tabindex="0"
+              aria-label="Click or drag and drop up to 6 images"
+            >
+              <input
+                type="file"
+                id="photo-input"
+                name="photos"
+                accept="image/jpeg,image/jpg,image/png"
+                multiple
+                aria-hidden="true"
+              />
+              <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <p class="upload-label">Click to select or drag &amp; drop</p>
+              <p class="upload-hint">JPEG / PNG · Any size — compressed automatically in-browser</p>
+            </div>
+            <div class="image-previews" id="image-previews"></div>
+          </section>
+
+          <!-- ⑤ CAPTCHA + Submit -->
+          <section class="form-section" style="gap: 24px;">
+            <div class="form-section-title">05 — Verification</div>
+            <div class="turnstile-wrap">
+              <div
+                class="cf-turnstile"
+                id="turnstile-widget"
+                data-sitekey="0x4AAAAAACxLzjRsK38g4Ebw"
+                data-theme="dark"
+                data-size="normal"
+              ></div>
+            </div>
+            <div id="status-msg" class="status-msg" role="alert" aria-live="polite"></div>
+            <div class="submit-row">
+              <p class="submit-note">
+                Your submission is reviewed manually before going live.
+                No account required — recipes are attributed as provided.
+              </p>
+              <button type="submit" id="submit-btn" class="submit-btn" disabled>
+                <span class="spinner" id="spinner"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="submit-icon">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+                <span id="submit-label">Submit Recipe</span>
+              </button>
+            </div>
+          </section>
+
+        </form>
+      </main>
+
+      <footer class="submit-footer animate-in delay-2">
+        <span>Fujifilm Simulation Protocol © 2026</span>
+        <span>X-SYSTEM_V3 // COMMUNITY</span>
+      </footer>
+    </div>
+
+    <script>
+      // ── Constants ────────────────────────────────────────
+      const WORKER_URL = 'https://fujisims-submission.pantoine.workers.dev';
+      const MAX_IMAGES = 6;
+      const MAX_DIMENSION = 2048;
+      const JPEG_QUALITY = 0.85;
+
+      // ── State ───────────────────────────────────────────
+      let compressedImages: { name: string; dataUrl: string; originalSize: number; compressedSize: number }[] = [];
+      let turnstileToken = '';
+
+      // ── Turnstile callback ──────────────────────────────
+      (window as any).onTurnstileSuccess = (token: string) => {
+        turnstileToken = token;
+        updateSubmitState();
+      };
+
+      // Patch data-callback on the widget so Turnstile calls our function
+      document.addEventListener('DOMContentLoaded', () => {
+        const widget = document.getElementById('turnstile-widget');
+        if (widget) widget.setAttribute('data-callback', 'onTurnstileSuccess');
+      });
+
+      // ── UI helpers ──────────────────────────────────────
+      function updateSubmitState() {
+        const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+        const nameOk = !!(document.getElementById('recipe-name') as HTMLInputElement).value.trim();
+        const simOk = !!(document.getElementById('film-sim') as HTMLSelectElement).value;
+        const imagesOk = compressedImages.length >= 2;
+        const captchaOk = !!turnstileToken;
+        btn.disabled = !(nameOk && simOk && imagesOk && captchaOk);
+      }
+
+      function showStatus(type: 'success' | 'error', message: string) {
+        const el = document.getElementById('status-msg')!;
+        el.className = `status-msg ${type} visible`;
+        el.textContent = message;
+      }
+
+      function hideStatus() {
+        const el = document.getElementById('status-msg')!;
+        el.className = 'status-msg';
+        el.textContent = '';
+      }
+
+      function setLoading(loading: boolean) {
+        const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+        const spinner = document.getElementById('spinner')!;
+        const icon = document.getElementById('submit-icon')!;
+        const label = document.getElementById('submit-label')!;
+        btn.disabled = loading;
+        spinner.classList.toggle('visible', loading);
+        icon.style.display = loading ? 'none' : '';
+        label.textContent = loading ? 'Submitting…' : 'Submit Recipe';
+      }
+
+      // ── Image compression via Canvas ────────────────────
+      function compressImage(file: File): Promise<{ name: string; dataUrl: string; originalSize: number; compressedSize: number }> {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            // Calculate target dimensions
+            let { width, height } = img;
+            if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+              const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+              width = Math.round(width * ratio);
+              height = Math.round(height * ratio);
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d')!;
+            ctx.drawImage(img, 0, 0, width, height);
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) return reject(new Error('Compression failed'));
+                const reader = new FileReader();
+                reader.onload = () => {
+                  resolve({
+                    name: file.name.replace(/\.[^.]+$/, '.jpg'),
+                    dataUrl: reader.result as string,
+                    originalSize: file.size,
+                    compressedSize: blob!.size,
+                  });
+                };
+                reader.readAsDataURL(blob);
+              },
+              'image/jpeg',
+              JPEG_QUALITY
+            );
+          };
+          img.onerror = () => reject(new Error('Could not load image'));
+          img.src = url;
+        });
+      }
+
+      function formatBytes(bytes: number) {
+        if (bytes < 1024) return `${bytes} B`;
+        if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+        return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+      }
+
+      // ── Preview rendering ────────────────────────────────
+      function renderPreviews() {
+        const container = document.getElementById('image-previews')!;
+        container.innerHTML = '';
+        compressedImages.forEach((img, i) => {
+          const reduced = img.originalSize > img.compressedSize;
+          const item = document.createElement('div');
+          item.className = 'preview-item';
+          item.innerHTML = `
+            <img src="${img.dataUrl}" alt="Preview ${i + 1}" />
+            <button type="button" class="preview-remove" data-index="${i}" aria-label="Remove image ${i + 1}">×</button>
+            <span class="preview-size">${formatBytes(img.compressedSize)}</span>
+            ${reduced ? `<span class="compression-badge visible">${Math.round((1 - img.compressedSize / img.originalSize) * 100)}% smaller</span>` : ''}
+          `;
+          container.appendChild(item);
+        });
+        // Remove buttons
+        container.querySelectorAll<HTMLButtonElement>('.preview-remove').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const idx = parseInt(btn.dataset.index!);
+            compressedImages.splice(idx, 1);
+            renderPreviews();
+            updateSubmitState();
+          });
+        });
+        updateSubmitState();
+      }
+
+      // ── File handling ────────────────────────────────────
+      async function handleFiles(files: FileList | File[]) {
+        const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+        const remaining = MAX_IMAGES - compressedImages.length;
+        if (remaining <= 0) return;
+
+        const toProcess = arr.slice(0, remaining);
+        const zone = document.getElementById('drop-zone')!;
+        zone.querySelector('.upload-label')!.textContent = `Compressing ${toProcess.length} image(s)…`;
+
+        try {
+          const results = await Promise.all(toProcess.map(compressImage));
+          compressedImages.push(...results);
+          renderPreviews();
+        } catch (e) {
+          showStatus('error', 'Failed to process one or more images. Please try again.');
+        } finally {
+          zone.querySelector('.upload-label')!.textContent = compressedImages.length >= MAX_IMAGES
+            ? 'Maximum 6 images reached'
+            : 'Click to select or drag & drop';
+        }
+      }
+
+      // ── Drag & drop ──────────────────────────────────────
+      const dropZone = document.getElementById('drop-zone')!;
+      dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+      dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files);
+      });
+
+      const photoInput = document.getElementById('photo-input') as HTMLInputElement;
+      photoInput.addEventListener('change', () => {
+        if (photoInput.files) handleFiles(photoInput.files);
+        photoInput.value = ''; // allow re-selecting same file
+      });
+
+      // ── Stepper buttons ──────────────────────────────────
+      document.querySelectorAll<HTMLButtonElement>('.adj-stepper').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const input = document.getElementById(btn.dataset.target!) as HTMLInputElement;
+          const dir = parseFloat(btn.dataset.dir!);
+          const step = parseFloat(input.step) || 1;
+          const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
+          const max = input.max !== '' ? parseFloat(input.max) : Infinity;
+          const newVal = Math.min(max, Math.max(min, parseFloat(input.value || '0') + dir * step));
+          input.value = String(newVal);
+        });
+      });
+
+      // ── Live validation ──────────────────────────────────
+      ['recipe-name', 'film-sim'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', updateSubmitState);
+      });
+
+      // ── Form submit ──────────────────────────────────────
+      document.getElementById('recipe-form')!.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideStatus();
+
+        if (!turnstileToken) {
+          showStatus('error', 'Please complete the verification challenge.');
+          return;
+        }
+        if (compressedImages.length < 2) {
+          showStatus('error', 'Please add at least 2 example photos.');
+          return;
+        }
+
+        const form = e.target as HTMLFormElement;
+        const get = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
+
+        const wbVal = get('white-balance');
+        const wbShift = get('wb-shift');
+        const wbFull = wbShift ? `${wbVal}, ${wbShift}` : wbVal;
+
+        const payload = {
+          turnstileToken,
+          recipe: {
+            name: get('recipe-name'),
+            calibration: (document.getElementById('recipe-calibration') as HTMLSelectElement).value,
+            author: get('recipe-author') || 'Anonymous',
+            authorLink: get('recipe-author-link') || null,
+            description: get('recipe-description'),
+            opt: get('recipe-opt'),
+            core: [
+              { label: 'Film Simulation', value: (document.getElementById('film-sim') as HTMLSelectElement).value },
+              { label: 'Grain Effect', value: (document.getElementById('grain-effect') as HTMLSelectElement).value },
+              { label: 'Color Chrome Effect', value: (document.getElementById('color-chrome') as HTMLSelectElement).value },
+              { label: 'Color Chrome FX Blue', value: (document.getElementById('color-chrome-blue') as HTMLSelectElement).value },
+              { label: 'White Balance', value: wbFull },
+              { label: 'Dynamic Range', value: (document.getElementById('dynamic-range') as HTMLSelectElement).value },
+            ],
+            adjustments: [
+              { label: 'Highlight', value: parseFloat(get('highlight')) || 0 },
+              { label: 'Shadow', value: parseFloat(get('shadow')) || 0 },
+              { label: 'Color', value: parseInt(get('color')) || 0 },
+              { label: 'Sharpness', value: parseInt(get('sharpness')) || 0 },
+              { label: 'Noise Reduction', value: parseInt(get('noiseReduction')) || 0 },
+              { label: 'Clarity', value: parseInt(get('clarity')) || 0 },
+              { label: 'Exp. Comp.', value: get('expComp') || '0' },
+              { label: 'ISO', value: get('iso') || 'Auto' },
+            ],
+          },
+          images: compressedImages.map(img => ({
+            name: img.name,
+            dataUrl: img.dataUrl,
+          })),
+        };
+
+        setLoading(true);
+        try {
+          const res = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json() as { ok: boolean; message?: string };
+          if (!res.ok || !data.ok) throw new Error(data.message || 'Submission failed');
+          showStatus('success', '✓ Recipe submitted! It will appear on the site after manual review. Thank you for contributing.');
+          form.reset();
+          compressedImages = [];
+          turnstileToken = '';
+          renderPreviews();
+          (window as any).turnstile?.reset();
+          updateSubmitState();
+        } catch (err: any) {
+          showStatus('error', `Submission failed: ${err.message}. Please try again or contact us.`);
+        } finally {
+          setLoading(false);
+        }
+      });
+    </script>
+  </body>
+</html>
