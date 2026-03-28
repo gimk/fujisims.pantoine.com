@@ -33,33 +33,41 @@ async function getGalleryData(): Promise<GalleryPhoto[]> {
   for (let i = 0; i < recipeData.images.length; i++) {
     const imageData = recipeData.images[i];
 
+    // Prefer EXIF stored in frontmatter (set during submission, before canvas stripped it).
+    // Fall back to live exifr parsing for legacy/manually-added recipes.
     let exifString = "EXIF NOT FOUND";
-    try {
-      let cleanSrc = imageData.src.split("?")[0].replace("/@fs", "");
-      const absolutePath =
-        (imageData as any).fsPath ||
-        (path.isAbsolute(cleanSrc)
-          ? cleanSrc
-          : path.join(process.cwd(), cleanSrc));
-      const exif = await exifr.parse(absolutePath, { tiff: true, exif: true });
-      if (exif) {
-        const fNumber = exif.FNumber ? `F/${exif.FNumber}` : "F/--";
-        let exposure = exif.ExposureTime;
-        let expString = "1/--";
-        if (exposure) {
-          if (exposure >= 1) expString = `${exposure}S`;
-          else expString = `1/${Math.round(1 / exposure)}`;
+    const frontmatterExif = recipeData.exif?.[i];
+
+    if (frontmatterExif) {
+      exifString = frontmatterExif;
+    } else {
+      try {
+        let cleanSrc = imageData.src.split("?")[0].replace("/@fs", "");
+        const absolutePath =
+          (imageData as any).fsPath ||
+          (path.isAbsolute(cleanSrc)
+            ? cleanSrc
+            : path.join(process.cwd(), cleanSrc));
+        const exif = await exifr.parse(absolutePath, { tiff: true, exif: true });
+        if (exif) {
+          const fNumber = exif.FNumber ? `F/${exif.FNumber}` : "F/--";
+          let exposure = exif.ExposureTime;
+          let expString = "1/--";
+          if (exposure) {
+            if (exposure >= 1) expString = `${exposure}S`;
+            else expString = `1/${Math.round(1 / exposure)}`;
+          }
+          const focalLength = exif.FocalLengthIn35mmFormat
+            ? `${exif.FocalLengthIn35mmFormat}MM`
+            : exif.FocalLength
+              ? `${exif.FocalLength}MM`
+              : "--MM";
+          exifString = `${fNumber} · ${expString} · ${focalLength}`;
         }
-        const focalLength = exif.FocalLengthIn35mmFormat
-          ? `${exif.FocalLengthIn35mmFormat}MM`
-          : exif.FocalLength
-            ? `${exif.FocalLength}MM`
-            : "--MM";
-        exifString = `${fNumber} · ${expString} · ${focalLength}`;
+      } catch (e) {
+        exifString = "ERR: " + (e as Error).message;
+        console.error(`Error parsing exif:`, e);
       }
-    } catch (e) {
-      exifString = "ERR: " + (e as Error).message;
-      console.error(`Error parsing exif:`, e);
     }
 
     photos.push({

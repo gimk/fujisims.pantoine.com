@@ -21,7 +21,8 @@ const recipesCollection = defineCollection({
             label: z.string(),
             value: z.union([z.string(), z.number()]),
         })),
-        images: z.array(image())
+        images: z.array(image()),
+        exif: z.array(z.string()).optional(),
     })
 });
 

@@ -90,6 +90,7 @@ export default {
 
       // 3. Upload images one by one
       const imagePaths = [];
+      const imageExifs = [];
       for (let i = 0; i < images.length; i++) {
         const img = images[i];
         // dataUrl is "data:image/jpeg;base64,<DATA>"
@@ -111,6 +112,7 @@ export default {
           throw new Error(`Failed to upload image ${i + 1}: ${err.message}`);
         }
         imagePaths.push(`../../assets/recipes/${slug}/${i + 1}.${ext}`);
+        imageExifs.push(img.exif || '');
       }
 
       // 4. Build the Markdown frontmatter
@@ -119,6 +121,7 @@ export default {
         refNo,
         slug,
         imagePaths,
+        imageExifs,
         submittedAt: now,
       });
 
@@ -196,8 +199,8 @@ function slugify(str) {
     .replace(/^-|-$/g, '');
 }
 
-// ── Markdown builder ────────────────────────────────────
-function buildMarkdown({ recipe, refNo, slug, imagePaths, submittedAt }) {
+// ── Markdown builder ────────────────────────────
+function buildMarkdown({ recipe, refNo, slug, imagePaths, imageExifs, submittedAt }) {
   const author = recipe.author || 'Anonymous';
   const authorLine = recipe.authorLink ? `authorLink: "${recipe.authorLink}"\n` : '';
   const optLine = recipe.opt ? `opt: "${recipe.opt}"\n` : '';
@@ -216,6 +219,11 @@ function buildMarkdown({ recipe, refNo, slug, imagePaths, submittedAt }) {
 
   const imagesYaml = imagePaths.map(p => `  - "${p}"`).join('\n');
 
+  // EXIF per image (extracted client-side before canvas stripped it)
+  const exifsYaml = imageExifs && imageExifs.length
+    ? `exif:\n${imageExifs.map(e => `  - "${e || ''}"`).join('\n')}\n`
+    : '';
+
   return `---
 name: "${recipe.name}"
 refNo: "${refNo}"
@@ -230,7 +238,7 @@ adjustments:
 ${adjYaml}
 images:
 ${imagesYaml}
----
+${exifsYaml}---
 
 ${descLine}
 `;
