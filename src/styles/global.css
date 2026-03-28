@@ -109,6 +109,7 @@
             font-style: italic;
             background: linear-gradient(to bottom right, #ffffff, #8a91a6);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -647,4 +648,136 @@
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
+        }
+
+        /* ── Share button ────────────────────────────────── */
+
+        .header-right {
+            display: flex;
+            align-items: flex-end;
+            gap: 32px;
+        }
+
+        .home-header-right {
+            align-items: center;
+        }
+
+        /* ── Last recipe pill ───────────────────────────── */
+
+        .last-recipe-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 32px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .last-recipe-pill:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text);
+            background: var(--surface-hover);
+        }
+
+        .last-recipe-pill svg:first-child {
+            flex-shrink: 0;
+            color: var(--accent);
+        }
+
+        .last-recipe-pill-arrow {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .last-recipe-pill-arrow line {
+            transform-box: fill-box;
+            transform-origin: right center;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .last-recipe-pill-arrow polyline {
+            transform-box: fill-box;
+            transform-origin: right center;
+            transform: translateX(-1px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .last-recipe-pill:hover .last-recipe-pill-arrow line {
+            transform: scaleX(1);
+        }
+
+        .last-recipe-pill:hover .last-recipe-pill-arrow polyline {
+            transform: translateX(0);
+        }
+
+        .share-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            height: 32px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .share-btn:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text);
+            background: var(--surface-hover);
+        }
+
+        .share-btn svg {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+        }
+
+        .share-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .share-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding: 5px 10px;
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .share-tooltip.visible {
+            opacity: 1;
         }
