@@ -488,6 +488,7 @@ import "../styles/global.css";
                 class="cf-turnstile"
                 id="turnstile-widget"
                 data-sitekey="0x4AAAAAACxLzjRsK38g4Ebw"
+                data-callback="onTurnstileSuccess"
                 data-theme="dark"
                 data-size="normal"
               >
@@ -555,11 +556,7 @@ import "../styles/global.css";
         updateSubmitState();
       };
 
-      // Patch data-callback on the widget so Turnstile calls our function
-      document.addEventListener("DOMContentLoaded", () => {
-        const widget = document.getElementById("turnstile-widget");
-        if (widget) widget.setAttribute("data-callback", "onTurnstileSuccess");
-      });
+
 
       // ── UI helpers ──────────────────────────────────────
       function updateSubmitState() {
