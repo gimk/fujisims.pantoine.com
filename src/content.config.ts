@@ -9,7 +9,7 @@ const recipesCollection = defineCollection({
         version: z.string(),
         calibration: z.string(),
         status: z.string(),
-        opt: z.string(),
+        opt: z.string().optional(),
         author: z.string(),
         authorLink: z.string().url().optional(),
         submittedAt: z.string().optional(),
