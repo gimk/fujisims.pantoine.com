@@ -228,7 +228,10 @@ const filmSim =
 
       <footer class="animate-in delay-3">
         <span>Status: {recipeData.status} // Opt: {recipeData.opt}</span>
-        <span>Fujifilm Simulation Protocol © 2026</span>
+        <span>Made by: {recipeData.authorLink
+          ? <a href={recipeData.authorLink} target="_blank" rel="noopener noreferrer" class="author-link">{recipeData.author}</a>
+          : recipeData.author}
+        </span>
       </footer>
     </div>
 

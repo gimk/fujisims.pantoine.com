@@ -5,6 +5,8 @@ version: "01.0"
 calibration: "X-TRANS V"
 status: "Ready"
 opt: "ISO 640"
+author: "Oyvind Nordhagen"
+authorLink: "https://oyvindwashere.medium.com/new-american-color-fujifilm-recipe-457e1c96f885"
 core:
   - label: "Film Simulation"
     value: "Astia/Soft"

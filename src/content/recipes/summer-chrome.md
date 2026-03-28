@@ -5,6 +5,8 @@ version: "01.0"
 calibration: "X-TRANS V"
 status: "Ready"
 opt: "ISO 500–6400"
+author: "Osan Bilgi"
+authorLink: "https://www.instagram.com/osanbilgi"
 core:
   - label: "Film Simulation"
     value: "Classic Chrome"

@@ -10,6 +10,8 @@ const recipesCollection = defineCollection({
         calibration: z.string(),
         status: z.string(),
         opt: z.string(),
+        author: z.string(),
+        authorLink: z.string().url().optional(),
         core: z.array(z.object({
             label: z.string(),
             value: z.union([z.string(), z.number()])
