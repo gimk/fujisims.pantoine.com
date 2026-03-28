@@ -19,12 +19,13 @@ import "../styles/global.css";
     />
     <link rel="icon" type="image/png" href="/favicon.png?v=1" />
     <!-- Cloudflare Turnstile -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer></script>
   </head>
   <body class="submit-page">
     <div class="frame submit-frame">
-
       <!-- Header -->
       <header class="submit-header animate-in">
         <div class="submit-title-block">
@@ -35,7 +36,9 @@ import "../styles/global.css";
           </a>
           <div>
             <h1>Submit a Recipe</h1>
-            <p class="submit-subtitle">Fujifilm X-System · Community Recipe Submission</p>
+            <p class="submit-subtitle">
+              Fujifilm X-System · Community Recipe Submission
+            </p>
           </div>
         </div>
         <div class="meta-data">
@@ -47,39 +50,74 @@ import "../styles/global.css";
       <!-- Form -->
       <main class="submit-body animate-in delay-1">
         <form id="recipe-form" novalidate>
-
           <!-- ① Identity -->
           <section class="form-section">
             <div class="form-section-title">01 — Recipe Identity</div>
             <div class="form-grid">
               <div class="field">
-                <label for="recipe-name">Recipe Name <span style="color:var(--accent)">*</span></label>
-                <input type="text" id="recipe-name" name="name" required placeholder="e.g. New American" autocomplete="off" />
+                <label for="recipe-name"
+                  >Recipe Name <span style="color:var(--accent)">*</span></label
+                >
+                <input
+                  type="text"
+                  id="recipe-name"
+                  name="name"
+                  required
+                  placeholder="e.g. New American"
+                  autocomplete="off"
+                />
               </div>
               <div class="field">
                 <label for="recipe-calibration">Camera System</label>
                 <select id="recipe-calibration" name="calibration">
-                  <option value="X-TRANS V">X-Trans V (X-T5, X-H2, X-Pro3…)</option>
+                  <option value="X-TRANS V"
+                    >X-Trans V (X-T5, X-H2, X-Pro3…)</option
+                  >
                   <option value="X-TRANS IV">X-Trans IV (X-T4, X-S10…)</option>
-                  <option value="X-TRANS III">X-Trans III (X-T3, X-T30…)</option>
+                  <option value="X-TRANS III">X-Trans III (X-T3, X-T30…)</option
+                  >
                   <option value="Bayer GFX">GFX / Bayer (GFX100, X-A…)</option>
                 </select>
               </div>
               <div class="field">
-                <label for="recipe-author">Your Name / Alias</label>
-                <input type="text" id="recipe-author" name="author" placeholder="Anonymous" autocomplete="off" />
+                <label for="recipe-author">Your Name / Author</label>
+                <input
+                  type="text"
+                  id="recipe-author"
+                  name="author"
+                  placeholder="Anonymous"
+                  autocomplete="off"
+                />
               </div>
               <div class="field">
                 <label for="recipe-author-link">Author Link (optional)</label>
-                <input type="url" id="recipe-author-link" name="authorLink" placeholder="https://instagram.com/yourprofile" />
+                <input
+                  type="url"
+                  id="recipe-author-link"
+                  name="authorLink"
+                  placeholder="https://instagram.com/yourprofile"
+                />
               </div>
               <div class="field form-grid single" style="grid-column: 1 / -1;">
-                <label for="recipe-description">Short Description (optional)</label>
-                <textarea id="recipe-description" name="description" placeholder="Describe the mood, inspiration or ideal shooting conditions for this recipe…"></textarea>
+                <label for="recipe-description"
+                  >Short Description (optional)</label
+                >
+                <textarea
+                  id="recipe-description"
+                  name="description"
+                  placeholder="Describe the mood, inspiration or ideal shooting conditions for this recipe…"
+                ></textarea>
               </div>
               <div class="field">
-                <label for="recipe-opt">Optimal ISO / Conditions (optional)</label>
-                <input type="text" id="recipe-opt" name="opt" placeholder="e.g. ISO 640" />
+                <label for="recipe-opt"
+                  >Optimal ISO / Conditions (optional)</label
+                >
+                <input
+                  type="text"
+                  id="recipe-opt"
+                  name="opt"
+                  placeholder="e.g. ISO 640"
+                />
               </div>
             </div>
           </section>
@@ -89,7 +127,10 @@ import "../styles/global.css";
             <div class="form-section-title">02 — Core Settings</div>
             <div class="form-grid">
               <div class="field">
-                <label for="film-sim">Film Simulation <span style="color:var(--accent)">*</span></label>
+                <label for="film-sim"
+                  >Film Simulation <span style="color:var(--accent)">*</span
+                  ></label
+                >
                 <select id="film-sim" name="filmSimulation" required>
                   <option value="">— Select —</option>
                   <optgroup label="Classic">
@@ -126,7 +167,8 @@ import "../styles/global.css";
                   <option value="Weak / Small">Weak / Small</option>
                   <option value="Weak / Large">Weak / Large</option>
                   <option value="Strong / Small">Strong / Small</option>
-                  <option value="Strong / Large" selected>Strong / Large</option>
+                  <option value="Strong / Large" selected>Strong / Large</option
+                  >
                 </select>
               </div>
               <div class="field">
@@ -149,8 +191,12 @@ import "../styles/global.css";
                 <label for="white-balance">White Balance</label>
                 <select id="white-balance" name="whiteBalance">
                   <option value="Auto">Auto</option>
-                  <option value="Auto White Priority">Auto White Priority</option>
-                  <option value="Auto Ambiance Priority">Auto Ambiance Priority</option>
+                  <option value="Auto White Priority"
+                    >Auto White Priority</option
+                  >
+                  <option value="Auto Ambiance Priority"
+                    >Auto Ambiance Priority</option
+                  >
                   <option value="Daylight">Daylight</option>
                   <option value="Shade">Shade</option>
                   <option value="Cloudy">Cloudy</option>
@@ -164,7 +210,12 @@ import "../styles/global.css";
               </div>
               <div class="field">
                 <label for="wb-shift">WB Shift Red / Blue (optional)</label>
-                <input type="text" id="wb-shift" name="wbShift" placeholder="e.g. +3 Red, -4 Blue" />
+                <input
+                  type="text"
+                  id="wb-shift"
+                  name="wbShift"
+                  placeholder="e.g. +3 Red, -4 Blue"
+                />
               </div>
               <div class="field">
                 <label for="dynamic-range">Dynamic Range</label>
@@ -186,70 +237,202 @@ import "../styles/global.css";
               <div class="adj-field">
                 <label>Highlight</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-highlight" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-highlight" name="highlight" value="0" min="-2" max="4" step="0.5" />
-                  <button type="button" class="adj-stepper" data-target="adj-highlight" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-highlight"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-highlight"
+                    name="highlight"
+                    value="0"
+                    min="-2"
+                    max="4"
+                    step="0.5"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-highlight"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Shadow -->
               <div class="adj-field">
                 <label>Shadow</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-shadow" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-shadow" name="shadow" value="0" min="-2" max="4" step="0.5" />
-                  <button type="button" class="adj-stepper" data-target="adj-shadow" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-shadow"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-shadow"
+                    name="shadow"
+                    value="0"
+                    min="-2"
+                    max="4"
+                    step="0.5"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-shadow"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Color -->
               <div class="adj-field">
                 <label>Color</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-color" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-color" name="color" value="0" min="-4" max="4" step="1" />
-                  <button type="button" class="adj-stepper" data-target="adj-color" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-color"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-color"
+                    name="color"
+                    value="0"
+                    min="-4"
+                    max="4"
+                    step="1"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-color"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Sharpness -->
               <div class="adj-field">
                 <label>Sharpness</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-sharpness" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-sharpness" name="sharpness" value="0" min="-4" max="4" step="1" />
-                  <button type="button" class="adj-stepper" data-target="adj-sharpness" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-sharpness"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-sharpness"
+                    name="sharpness"
+                    value="0"
+                    min="-4"
+                    max="4"
+                    step="1"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-sharpness"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Noise Reduction -->
               <div class="adj-field">
                 <label>Noise Reduction</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-nr" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-nr" name="noiseReduction" value="0" min="-4" max="4" step="1" />
-                  <button type="button" class="adj-stepper" data-target="adj-nr" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-nr"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-nr"
+                    name="noiseReduction"
+                    value="0"
+                    min="-4"
+                    max="4"
+                    step="1"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-nr"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Clarity -->
               <div class="adj-field">
                 <label>Clarity</label>
                 <div class="adj-input-wrap">
-                  <button type="button" class="adj-stepper" data-target="adj-clarity" data-dir="-1">−</button>
-                  <input class="adj-number" type="number" id="adj-clarity" name="clarity" value="0" min="-5" max="5" step="1" />
-                  <button type="button" class="adj-stepper" data-target="adj-clarity" data-dir="1">+</button>
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-clarity"
+                    data-dir="-1">−</button
+                  >
+                  <input
+                    class="adj-number"
+                    type="number"
+                    id="adj-clarity"
+                    name="clarity"
+                    value="0"
+                    min="-5"
+                    max="5"
+                    step="1"
+                  />
+                  <button
+                    type="button"
+                    class="adj-stepper"
+                    data-target="adj-clarity"
+                    data-dir="1">+</button
+                  >
                 </div>
               </div>
               <!-- Exp Comp -->
               <div class="adj-field">
                 <label>Exp. Comp.</label>
-                <div class="adj-input-wrap" style="border: none; background: none; padding: 0;">
-                  <input class="adj-number" type="text" id="adj-expcomp" name="expComp" placeholder="e.g. +1/3 to +2/3"
-                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;" />
+                <div
+                  class="adj-input-wrap"
+                  style="border: none; background: none; padding: 0;"
+                >
+                  <input
+                    class="adj-number"
+                    type="text"
+                    id="adj-expcomp"
+                    name="expComp"
+                    placeholder="e.g. +1/3 to +2/3"
+                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;"
+                  />
                 </div>
               </div>
               <!-- ISO -->
               <div class="adj-field">
                 <label>ISO</label>
-                <div class="adj-input-wrap" style="border: none; background: none; padding: 0;">
-                  <input class="adj-number" type="text" id="adj-iso" name="iso" placeholder="e.g. 200–1600"
-                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;" />
+                <div
+                  class="adj-input-wrap"
+                  style="border: none; background: none; padding: 0;"
+                >
+                  <input
+                    class="adj-number"
+                    type="text"
+                    id="adj-iso"
+                    name="iso"
+                    placeholder="e.g. 200–1600"
+                    style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0 12px; height: 38px; text-align: left;"
+                  />
                 </div>
               </div>
             </div>
@@ -257,7 +440,9 @@ import "../styles/global.css";
 
           <!-- ④ Photos -->
           <section class="form-section">
-            <div class="form-section-title">04 — Example Photos (2–6 images)</div>
+            <div class="form-section-title">
+              04 — Example Photos (2–6 images)
+            </div>
             <div
               class="image-upload-area"
               id="drop-zone"
@@ -273,13 +458,24 @@ import "../styles/global.css";
                 multiple
                 aria-hidden="true"
               />
-              <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                class="upload-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="17 8 12 3 7 8"></polyline>
                 <line x1="12" y1="3" x2="12" y2="15"></line>
               </svg>
               <p class="upload-label">Click to select or drag &amp; drop</p>
-              <p class="upload-hint">JPEG / PNG · Any size — compressed automatically in-browser</p>
+              <p class="upload-hint">
+                JPEG / PNG · Any size — compressed automatically in-browser
+              </p>
             </div>
             <div class="image-previews" id="image-previews"></div>
           </section>
@@ -294,17 +490,33 @@ import "../styles/global.css";
                 data-sitekey="0x4AAAAAACxLzjRsK38g4Ebw"
                 data-theme="dark"
                 data-size="normal"
-              ></div>
+              >
+              </div>
             </div>
-            <div id="status-msg" class="status-msg" role="alert" aria-live="polite"></div>
+            <div
+              id="status-msg"
+              class="status-msg"
+              role="alert"
+              aria-live="polite"
+            >
+            </div>
             <div class="submit-row">
               <p class="submit-note">
-                Your submission is reviewed manually before going live.
-                No account required — recipes are attributed as provided.
+                Your submission is reviewed manually before going live. No
+                account required — recipes are attributed as provided.
               </p>
               <button type="submit" id="submit-btn" class="submit-btn" disabled>
                 <span class="spinner" id="spinner"></span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="submit-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  id="submit-icon"
+                >
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -312,7 +524,6 @@ import "../styles/global.css";
               </button>
             </div>
           </section>
-
         </form>
       </main>
 
@@ -324,14 +535,19 @@ import "../styles/global.css";
 
     <script>
       // ── Constants ────────────────────────────────────────
-      const WORKER_URL = 'https://fujisims-submission.pantoine.workers.dev';
+      const WORKER_URL = "https://fujisims-submission.pantoine.workers.dev";
       const MAX_IMAGES = 6;
       const MAX_DIMENSION = 2048;
       const JPEG_QUALITY = 0.85;
 
       // ── State ───────────────────────────────────────────
-      let compressedImages: { name: string; dataUrl: string; originalSize: number; compressedSize: number }[] = [];
-      let turnstileToken = '';
+      let compressedImages: {
+        name: string;
+        dataUrl: string;
+        originalSize: number;
+        compressedSize: number;
+      }[] = [];
+      let turnstileToken = "";
 
       // ── Turnstile callback ──────────────────────────────
       (window as any).onTurnstileSuccess = (token: string) => {
@@ -340,46 +556,57 @@ import "../styles/global.css";
       };
 
       // Patch data-callback on the widget so Turnstile calls our function
-      document.addEventListener('DOMContentLoaded', () => {
-        const widget = document.getElementById('turnstile-widget');
-        if (widget) widget.setAttribute('data-callback', 'onTurnstileSuccess');
+      document.addEventListener("DOMContentLoaded", () => {
+        const widget = document.getElementById("turnstile-widget");
+        if (widget) widget.setAttribute("data-callback", "onTurnstileSuccess");
       });
 
       // ── UI helpers ──────────────────────────────────────
       function updateSubmitState() {
-        const btn = document.getElementById('submit-btn') as HTMLButtonElement;
-        const nameOk = !!(document.getElementById('recipe-name') as HTMLInputElement).value.trim();
-        const simOk = !!(document.getElementById('film-sim') as HTMLSelectElement).value;
+        const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+        const nameOk = !!(
+          document.getElementById("recipe-name") as HTMLInputElement
+        ).value.trim();
+        const simOk = !!(
+          document.getElementById("film-sim") as HTMLSelectElement
+        ).value;
         const imagesOk = compressedImages.length >= 2;
         const captchaOk = !!turnstileToken;
         btn.disabled = !(nameOk && simOk && imagesOk && captchaOk);
       }
 
-      function showStatus(type: 'success' | 'error', message: string) {
-        const el = document.getElementById('status-msg')!;
+      function showStatus(type: "success" | "error", message: string) {
+        const el = document.getElementById("status-msg")!;
         el.className = `status-msg ${type} visible`;
         el.textContent = message;
       }
 
       function hideStatus() {
-        const el = document.getElementById('status-msg')!;
-        el.className = 'status-msg';
-        el.textContent = '';
+        const el = document.getElementById("status-msg")!;
+        el.className = "status-msg";
+        el.textContent = "";
       }
 
       function setLoading(loading: boolean) {
-        const btn = document.getElementById('submit-btn') as HTMLButtonElement;
-        const spinner = document.getElementById('spinner')!;
-        const icon = document.getElementById('submit-icon')!;
-        const label = document.getElementById('submit-label')!;
+        const btn = document.getElementById("submit-btn") as HTMLButtonElement;
+        const spinner = document.getElementById("spinner")!;
+        const icon = document.getElementById("submit-icon")!;
+        const label = document.getElementById("submit-label")!;
         btn.disabled = loading;
-        spinner.classList.toggle('visible', loading);
-        icon.style.display = loading ? 'none' : '';
-        label.textContent = loading ? 'Submitting…' : 'Submit Recipe';
+        spinner.classList.toggle("visible", loading);
+        icon.style.display = loading ? "none" : "";
+        label.textContent = loading ? "Submitting…" : "Submit Recipe";
       }
 
       // ── Image compression via Canvas ────────────────────
-      function compressImage(file: File): Promise<{ name: string; dataUrl: string; originalSize: number; compressedSize: number }> {
+      function compressImage(
+        file: File,
+      ): Promise<{
+        name: string;
+        dataUrl: string;
+        originalSize: number;
+        compressedSize: number;
+      }> {
         return new Promise((resolve, reject) => {
           const img = new Image();
           const url = URL.createObjectURL(file);
@@ -388,22 +615,25 @@ import "../styles/global.css";
             // Calculate target dimensions
             let { width, height } = img;
             if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
-              const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+              const ratio = Math.min(
+                MAX_DIMENSION / width,
+                MAX_DIMENSION / height,
+              );
               width = Math.round(width * ratio);
               height = Math.round(height * ratio);
             }
-            const canvas = document.createElement('canvas');
+            const canvas = document.createElement("canvas");
             canvas.width = width;
             canvas.height = height;
-            const ctx = canvas.getContext('2d')!;
+            const ctx = canvas.getContext("2d")!;
             ctx.drawImage(img, 0, 0, width, height);
             canvas.toBlob(
               (blob) => {
-                if (!blob) return reject(new Error('Compression failed'));
+                if (!blob) return reject(new Error("Compression failed"));
                 const reader = new FileReader();
                 reader.onload = () => {
                   resolve({
-                    name: file.name.replace(/\.[^.]+$/, '.jpg'),
+                    name: file.name.replace(/\.[^.]+$/, ".jpg"),
                     dataUrl: reader.result as string,
                     originalSize: file.size,
                     compressedSize: blob!.size,
@@ -411,11 +641,11 @@ import "../styles/global.css";
                 };
                 reader.readAsDataURL(blob);
               },
-              'image/jpeg',
-              JPEG_QUALITY
+              "image/jpeg",
+              JPEG_QUALITY,
             );
           };
-          img.onerror = () => reject(new Error('Could not load image'));
+          img.onerror = () => reject(new Error("Could not load image"));
           img.src = url;
         });
       }
@@ -428,169 +658,243 @@ import "../styles/global.css";
 
       // ── Preview rendering ────────────────────────────────
       function renderPreviews() {
-        const container = document.getElementById('image-previews')!;
-        container.innerHTML = '';
+        const container = document.getElementById("image-previews")!;
+        container.innerHTML = "";
         compressedImages.forEach((img, i) => {
           const reduced = img.originalSize > img.compressedSize;
-          const item = document.createElement('div');
-          item.className = 'preview-item';
+          const item = document.createElement("div");
+          item.className = "preview-item";
           item.innerHTML = `
             <img src="${img.dataUrl}" alt="Preview ${i + 1}" />
             <button type="button" class="preview-remove" data-index="${i}" aria-label="Remove image ${i + 1}">×</button>
             <span class="preview-size">${formatBytes(img.compressedSize)}</span>
-            ${reduced ? `<span class="compression-badge visible">${Math.round((1 - img.compressedSize / img.originalSize) * 100)}% smaller</span>` : ''}
+            ${reduced ? `<span class="compression-badge visible">${Math.round((1 - img.compressedSize / img.originalSize) * 100)}% smaller</span>` : ""}
           `;
           container.appendChild(item);
         });
         // Remove buttons
-        container.querySelectorAll<HTMLButtonElement>('.preview-remove').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const idx = parseInt(btn.dataset.index!);
-            compressedImages.splice(idx, 1);
-            renderPreviews();
-            updateSubmitState();
+        container
+          .querySelectorAll<HTMLButtonElement>(".preview-remove")
+          .forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const idx = parseInt(btn.dataset.index!);
+              compressedImages.splice(idx, 1);
+              renderPreviews();
+              updateSubmitState();
+            });
           });
-        });
         updateSubmitState();
       }
 
       // ── File handling ────────────────────────────────────
       async function handleFiles(files: FileList | File[]) {
-        const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+        const arr = Array.from(files).filter((f) =>
+          f.type.startsWith("image/"),
+        );
         const remaining = MAX_IMAGES - compressedImages.length;
         if (remaining <= 0) return;
 
         const toProcess = arr.slice(0, remaining);
-        const zone = document.getElementById('drop-zone')!;
-        zone.querySelector('.upload-label')!.textContent = `Compressing ${toProcess.length} image(s)…`;
+        const zone = document.getElementById("drop-zone")!;
+        zone.querySelector(".upload-label")!.textContent =
+          `Compressing ${toProcess.length} image(s)…`;
 
         try {
           const results = await Promise.all(toProcess.map(compressImage));
           compressedImages.push(...results);
           renderPreviews();
         } catch (e) {
-          showStatus('error', 'Failed to process one or more images. Please try again.');
+          showStatus(
+            "error",
+            "Failed to process one or more images. Please try again.",
+          );
         } finally {
-          zone.querySelector('.upload-label')!.textContent = compressedImages.length >= MAX_IMAGES
-            ? 'Maximum 6 images reached'
-            : 'Click to select or drag & drop';
+          zone.querySelector(".upload-label")!.textContent =
+            compressedImages.length >= MAX_IMAGES
+              ? "Maximum 6 images reached"
+              : "Click to select or drag & drop";
         }
       }
 
       // ── Drag & drop ──────────────────────────────────────
-      const dropZone = document.getElementById('drop-zone')!;
-      dropZone.addEventListener('dragover', e => {
+      const dropZone = document.getElementById("drop-zone")!;
+      dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
-        dropZone.classList.add('drag-over');
+        dropZone.classList.add("drag-over");
       });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-      dropZone.addEventListener('drop', e => {
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("drag-over"),
+      );
+      dropZone.addEventListener("drop", (e) => {
         e.preventDefault();
-        dropZone.classList.remove('drag-over');
+        dropZone.classList.remove("drag-over");
         if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files);
       });
 
-      const photoInput = document.getElementById('photo-input') as HTMLInputElement;
-      photoInput.addEventListener('change', () => {
+      const photoInput = document.getElementById(
+        "photo-input",
+      ) as HTMLInputElement;
+      photoInput.addEventListener("change", () => {
         if (photoInput.files) handleFiles(photoInput.files);
-        photoInput.value = ''; // allow re-selecting same file
+        photoInput.value = ""; // allow re-selecting same file
       });
 
       // ── Stepper buttons ──────────────────────────────────
-      document.querySelectorAll<HTMLButtonElement>('.adj-stepper').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const input = document.getElementById(btn.dataset.target!) as HTMLInputElement;
-          const dir = parseFloat(btn.dataset.dir!);
-          const step = parseFloat(input.step) || 1;
-          const min = input.min !== '' ? parseFloat(input.min) : -Infinity;
-          const max = input.max !== '' ? parseFloat(input.max) : Infinity;
-          const newVal = Math.min(max, Math.max(min, parseFloat(input.value || '0') + dir * step));
-          input.value = String(newVal);
+      document
+        .querySelectorAll<HTMLButtonElement>(".adj-stepper")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const input = document.getElementById(
+              btn.dataset.target!,
+            ) as HTMLInputElement;
+            const dir = parseFloat(btn.dataset.dir!);
+            const step = parseFloat(input.step) || 1;
+            const min = input.min !== "" ? parseFloat(input.min) : -Infinity;
+            const max = input.max !== "" ? parseFloat(input.max) : Infinity;
+            const newVal = Math.min(
+              max,
+              Math.max(min, parseFloat(input.value || "0") + dir * step),
+            );
+            input.value = String(newVal);
+          });
         });
-      });
 
       // ── Live validation ──────────────────────────────────
-      ['recipe-name', 'film-sim'].forEach(id => {
-        document.getElementById(id)?.addEventListener('input', updateSubmitState);
+      ["recipe-name", "film-sim"].forEach((id) => {
+        document
+          .getElementById(id)
+          ?.addEventListener("input", updateSubmitState);
       });
 
       // ── Form submit ──────────────────────────────────────
-      document.getElementById('recipe-form')!.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        hideStatus();
+      document
+        .getElementById("recipe-form")!
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          hideStatus();
 
-        if (!turnstileToken) {
-          showStatus('error', 'Please complete the verification challenge.');
-          return;
-        }
-        if (compressedImages.length < 2) {
-          showStatus('error', 'Please add at least 2 example photos.');
-          return;
-        }
+          if (!turnstileToken) {
+            showStatus("error", "Please complete the verification challenge.");
+            return;
+          }
+          if (compressedImages.length < 2) {
+            showStatus("error", "Please add at least 2 example photos.");
+            return;
+          }
 
-        const form = e.target as HTMLFormElement;
-        const get = (id: string) => (document.getElementById(id) as HTMLInputElement).value.trim();
+          const form = e.target as HTMLFormElement;
+          const get = (id: string) =>
+            (document.getElementById(id) as HTMLInputElement).value.trim();
 
-        const wbVal = get('white-balance');
-        const wbShift = get('wb-shift');
-        const wbFull = wbShift ? `${wbVal}, ${wbShift}` : wbVal;
+          const wbVal = get("white-balance");
+          const wbShift = get("wb-shift");
+          const wbFull = wbShift ? `${wbVal}, ${wbShift}` : wbVal;
 
-        const payload = {
-          turnstileToken,
-          recipe: {
-            name: get('recipe-name'),
-            calibration: (document.getElementById('recipe-calibration') as HTMLSelectElement).value,
-            author: get('recipe-author') || 'Anonymous',
-            authorLink: get('recipe-author-link') || null,
-            description: get('recipe-description'),
-            opt: get('recipe-opt'),
-            core: [
-              { label: 'Film Simulation', value: (document.getElementById('film-sim') as HTMLSelectElement).value },
-              { label: 'Grain Effect', value: (document.getElementById('grain-effect') as HTMLSelectElement).value },
-              { label: 'Color Chrome Effect', value: (document.getElementById('color-chrome') as HTMLSelectElement).value },
-              { label: 'Color Chrome FX Blue', value: (document.getElementById('color-chrome-blue') as HTMLSelectElement).value },
-              { label: 'White Balance', value: wbFull },
-              { label: 'Dynamic Range', value: (document.getElementById('dynamic-range') as HTMLSelectElement).value },
-            ],
-            adjustments: [
-              { label: 'Highlight', value: parseFloat(get('highlight')) || 0 },
-              { label: 'Shadow', value: parseFloat(get('shadow')) || 0 },
-              { label: 'Color', value: parseInt(get('color')) || 0 },
-              { label: 'Sharpness', value: parseInt(get('sharpness')) || 0 },
-              { label: 'Noise Reduction', value: parseInt(get('noiseReduction')) || 0 },
-              { label: 'Clarity', value: parseInt(get('clarity')) || 0 },
-              { label: 'Exp. Comp.', value: get('expComp') || '0' },
-              { label: 'ISO', value: get('iso') || 'Auto' },
-            ],
-          },
-          images: compressedImages.map(img => ({
-            name: img.name,
-            dataUrl: img.dataUrl,
-          })),
-        };
+          const payload = {
+            turnstileToken,
+            recipe: {
+              name: get("recipe-name"),
+              calibration: (
+                document.getElementById(
+                  "recipe-calibration",
+                ) as HTMLSelectElement
+              ).value,
+              author: get("recipe-author") || "Anonymous",
+              authorLink: get("recipe-author-link") || null,
+              description: get("recipe-description"),
+              opt: get("recipe-opt"),
+              core: [
+                {
+                  label: "Film Simulation",
+                  value: (
+                    document.getElementById("film-sim") as HTMLSelectElement
+                  ).value,
+                },
+                {
+                  label: "Grain Effect",
+                  value: (
+                    document.getElementById("grain-effect") as HTMLSelectElement
+                  ).value,
+                },
+                {
+                  label: "Color Chrome Effect",
+                  value: (
+                    document.getElementById("color-chrome") as HTMLSelectElement
+                  ).value,
+                },
+                {
+                  label: "Color Chrome FX Blue",
+                  value: (
+                    document.getElementById(
+                      "color-chrome-blue",
+                    ) as HTMLSelectElement
+                  ).value,
+                },
+                { label: "White Balance", value: wbFull },
+                {
+                  label: "Dynamic Range",
+                  value: (
+                    document.getElementById(
+                      "dynamic-range",
+                    ) as HTMLSelectElement
+                  ).value,
+                },
+              ],
+              adjustments: [
+                {
+                  label: "Highlight",
+                  value: parseFloat(get("highlight")) || 0,
+                },
+                { label: "Shadow", value: parseFloat(get("shadow")) || 0 },
+                { label: "Color", value: parseInt(get("color")) || 0 },
+                { label: "Sharpness", value: parseInt(get("sharpness")) || 0 },
+                {
+                  label: "Noise Reduction",
+                  value: parseInt(get("noiseReduction")) || 0,
+                },
+                { label: "Clarity", value: parseInt(get("clarity")) || 0 },
+                { label: "Exp. Comp.", value: get("expComp") || "0" },
+                { label: "ISO", value: get("iso") || "Auto" },
+              ],
+            },
+            images: compressedImages.map((img) => ({
+              name: img.name,
+              dataUrl: img.dataUrl,
+            })),
+          };
 
-        setLoading(true);
-        try {
-          const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-          const data = await res.json() as { ok: boolean; message?: string };
-          if (!res.ok || !data.ok) throw new Error(data.message || 'Submission failed');
-          showStatus('success', '✓ Recipe submitted! It will appear on the site after manual review. Thank you for contributing.');
-          form.reset();
-          compressedImages = [];
-          turnstileToken = '';
-          renderPreviews();
-          (window as any).turnstile?.reset();
-          updateSubmitState();
-        } catch (err: any) {
-          showStatus('error', `Submission failed: ${err.message}. Please try again or contact us.`);
-        } finally {
-          setLoading(false);
-        }
-      });
+          setLoading(true);
+          try {
+            const res = await fetch(WORKER_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const data = (await res.json()) as {
+              ok: boolean;
+              message?: string;
+            };
+            if (!res.ok || !data.ok)
+              throw new Error(data.message || "Submission failed");
+            showStatus(
+              "success",
+              "✓ Recipe submitted! It will appear on the site after manual review. Thank you for contributing.",
+            );
+            form.reset();
+            compressedImages = [];
+            turnstileToken = "";
+            renderPreviews();
+            (window as any).turnstile?.reset();
+            updateSubmitState();
+          } catch (err: any) {
+            showStatus(
+              "error",
+              `Submission failed: ${err.message}. Please try again or contact us.`,
+            );
+          } finally {
+            setLoading(false);
+          }
+        });
     </script>
   </body>
 </html>
